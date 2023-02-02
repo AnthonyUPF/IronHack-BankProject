@@ -1,8 +1,11 @@
 package com.ironhack.demosecurityjwt.services.interfaces;
 
 import com.ironhack.demosecurityjwt.models.Author;
+import java.util.List;
 
-public interface AunthorServiceInterface {
+public interface AuthorServiceInterface {
+
+    List<Author> getAllAuthors();
 
     Author addAuthor(String author);
 
