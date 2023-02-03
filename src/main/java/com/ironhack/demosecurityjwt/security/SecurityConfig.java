@@ -81,10 +81,19 @@ public class SecurityConfig {
                 .requestMatchers(GET, "/api/users").hasAnyAuthority("ROLE_USER")
                 .requestMatchers(POST, "/api/users").hasAnyAuthority("ROLE_ADMIN")
 
-                .requestMatchers("/api/blogPosts/**").permitAll()
-                .requestMatchers("/api/authors/**").permitAll()
+                .requestMatchers(GET,"/api/blogPosts/**").permitAll()
+                .requestMatchers(GET,"/api/authors/**").permitAll()
 
-                .anyRequest().authenticated());
+                .requestMatchers(POST,"/api/blogPosts/**").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(POST,"/api/authors/**").hasAnyAuthority("ROLE_ADMIN")
+
+                .requestMatchers(PUT,"/api/blogPosts/**").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(PUT,"/api/authors/**").hasAnyAuthority("ROLE_ADMIN")
+
+                .requestMatchers(DELETE,"/api/blogPosts/**").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(DELETE,"/api/authors/**").hasAnyAuthority("ROLE_ADMIN")
+
+                .anyRequest().permitAll());
         // add the custom authentication filter to the http security object
         http.addFilter(customAuthenticationFilter);
         // Add the custom authorization filter before the standard authentication filter.

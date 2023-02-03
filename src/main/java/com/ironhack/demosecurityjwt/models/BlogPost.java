@@ -56,4 +56,6 @@ public class BlogPost {
     public void setPost(String post) {
         this.post = post;
     }
+
+
 }

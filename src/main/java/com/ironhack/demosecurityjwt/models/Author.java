@@ -14,8 +14,8 @@ public class Author {
 
     private String name;
 
-
-    @OneToMany(mappedBy = "authorId",cascade = CascadeType.ALL)
+    //@OneToMany(mappedBy = "authorId",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "authorId")
     @JsonIgnore
     private List<BlogPost> blogPostList;
 
