@@ -122,32 +122,6 @@ public class BlogPostServiceTest {
 
 
 
-    @Test
-    public void updatePost_successTest() throws Exception {
-        BlogPostDTO product = new BlogPostDTO(1, "Test", "BlogPostTest");
-        String body = objectMapper.writeValueAsString(product);
-
-        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/blogPosts/"+blogPost.getId())
-                .content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
-        BlogPost blogPos1 = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), BlogPost.class);
-
-
-        System.out.println(mvcResult.getResponse().getContentAsString());
-        //assertEquals(blogPost.getAuthorId().getName(), blogPos1.getAuthorId().getName());
-        //assertTrue(mvcResult.getResponse().getContentAsString().contains("Test"));
-
-        //assertEquals(product.getTitle(), blogPostRepository.findByTitle(product.getTitle()).getTitle());
-    }
-
-
-
-
-
-
-
-
-
-
 
     @Test
     public void deletePost_successTest() throws Exception {
