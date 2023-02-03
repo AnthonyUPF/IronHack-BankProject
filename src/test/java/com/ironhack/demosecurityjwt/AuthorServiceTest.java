@@ -19,7 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -68,6 +68,22 @@ public class AuthorServiceTest {
         List<Author> authorList = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), List.class);
         assertEquals(authorRepository.findAll().size(), authorList.size());
     }
+
+
+
+    @Test
+    public void addAuthor_successTest() throws Exception {
+        String newAuthor=author.getName();
+        mvcResult = mockMvc.perform(post("/api/authors/"+newAuthor))
+                .andExpect(status().isCreated()).andReturn();
+
+        Author author1 = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Author.class);
+        assertEquals(author.getName(), author1.getName());
+    }
+
+
+
+
 
 
 

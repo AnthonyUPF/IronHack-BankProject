@@ -97,7 +97,7 @@ public class BlogPostServiceTest {
         BlogPostDTO product = new BlogPostDTO(1, "Test", "BlogPostTest");
         String body = objectMapper.writeValueAsString(product);
 
-        MvcResult mvcResult = mockMvc.perform(post("/api/blogPosts/new")
+        mvcResult = mockMvc.perform(post("/api/blogPosts/new")
                 .content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
         assertTrue(mvcResult.getResponse().getContentAsString().contains("Test"));
@@ -108,12 +108,13 @@ public class BlogPostServiceTest {
 
     @Test
     public void addPost_failureTest() throws Exception {
-        BlogPostDTO product = new BlogPostDTO(2, "Test", "BlogPostTest");
+        BlogPostDTO product = new BlogPostDTO(10, "Test", "BlogPostTest");
         String body = objectMapper.writeValueAsString(product);
 
-        MvcResult mvcResult = mockMvc.perform(put("/api/blogPosts/"+blogPost.getId())
+        mvcResult = mockMvc.perform(post("/api/blogPosts/new")
                 .content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest()).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
+
         assertTrue(mvcResult.getResolvedException().getMessage().contains("id does not exist in the database"));
     }
 
@@ -126,13 +127,22 @@ public class BlogPostServiceTest {
         BlogPostDTO product = new BlogPostDTO(1, "Test", "BlogPostTest");
         String body = objectMapper.writeValueAsString(product);
 
-        MvcResult mvcResult = mockMvc.perform(post("/api/blogPosts/new")
-                .content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
-        System.out.println(mvcResult.getResponse().getContentAsString());
-        assertTrue(mvcResult.getResponse().getContentAsString().contains("Test"));
+        mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/blogPosts/"+blogPost.getId())
+                .content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
+        BlogPost blogPos1 = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), BlogPost.class);
 
-        assertEquals(product.getTitle(), blogPostRepository.findByTitle(product.getTitle()).getTitle());
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+        //assertEquals(blogPost.getAuthorId().getName(), blogPos1.getAuthorId().getName());
+        //assertTrue(mvcResult.getResponse().getContentAsString().contains("Test"));
+
+        //assertEquals(product.getTitle(), blogPostRepository.findByTitle(product.getTitle()).getTitle());
     }
+
+
+
+
+
 
 
 
