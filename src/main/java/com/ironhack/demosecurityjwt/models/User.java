@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.repository.cdi.Eager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,7 +17,7 @@ import static jakarta.persistence.FetchType.EAGER;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User1 {
     /**
      * The unique identifier for the user
      */
