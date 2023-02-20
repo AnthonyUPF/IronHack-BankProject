@@ -87,7 +87,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/bankUsers/thirdParties/**").hasAnyAuthority("ROLE_THIRD_PARTY")
 
                 .requestMatchers("/api/accounts/**").hasAnyAuthority("ROLE_ADMIN")
-                .requestMatchers("/api/bankUsers/**").hasAnyAuthority("ROLE_ADMIN")
+
 
 
 
