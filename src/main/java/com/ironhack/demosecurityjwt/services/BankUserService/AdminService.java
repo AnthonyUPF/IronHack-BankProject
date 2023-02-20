@@ -6,11 +6,13 @@ import com.ironhack.demosecurityjwt.Enuns.ChangeBalance;
 import com.ironhack.demosecurityjwt.dtos.AccountDTO.*;
 import com.ironhack.demosecurityjwt.dtos.BankUserDTO.AccountHolderDTO;
 import com.ironhack.demosecurityjwt.dtos.BankUserDTO.AdminDTO;
+import com.ironhack.demosecurityjwt.dtos.BankUserDTO.ThirdPartyDTO;
 import com.ironhack.demosecurityjwt.dtos.MessageDTO.DeleteMessageDTO;
 import com.ironhack.demosecurityjwt.models.Account.*;
 import com.ironhack.demosecurityjwt.models.Address.Address;
 import com.ironhack.demosecurityjwt.models.BankUser.AccountHolder;
 import com.ironhack.demosecurityjwt.models.BankUser.Admin;
+import com.ironhack.demosecurityjwt.models.BankUser.ThirdParty;
 import com.ironhack.demosecurityjwt.models.Money.Money;
 import com.ironhack.demosecurityjwt.models.User;
 import com.ironhack.demosecurityjwt.repositories.AccountRepository.*;
@@ -215,9 +217,8 @@ public class AdminService implements AdminServiceInterface {
             Money minimumBalance= new Money(savingsDTO.getMinimumBalance());
             BigDecimal interestRate=savingsDTO.getInterestRate();
 
-            Savings savings=new Savings(balance,accountHolder,minimumBalance,interestRate);
 
-            return  savingsRepository.save(savings);
+            return  savingsRepository.save(new Savings(balance,accountHolder,minimumBalance,interestRate));
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user");
         }
@@ -233,8 +234,7 @@ public class AdminService implements AdminServiceInterface {
             Money creditLimit=new Money(creditCardDTO.getCreditLimit());
             BigDecimal interestRate=creditCardDTO.getInterestRate();
 
-            CreditCard creditCard= new CreditCard(balance,accountHolder,creditLimit,interestRate);
-            return creditCardRepository.save(creditCard);
+            return creditCardRepository.save(new CreditCard(balance,accountHolder,creditLimit,interestRate));
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user");
         }
@@ -271,7 +271,18 @@ public class AdminService implements AdminServiceInterface {
 
     @Override
     public StudentChecking createStudentChecking(StudentCheckingDTO studentCheckingDTO, Authentication authentication) {
-        return null;
+        String username = authentication.getName();
+        if (adminRepository.findByUsername(username) != null) {
+
+            AccountHolder accountHolder = accountHolderRepository.findById(studentCheckingDTO.getAccountHolderId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account holder not found"));
+
+            Money balance = new Money(studentCheckingDTO.getBalance());
+
+            return studentCheckingRepository.save(new StudentChecking(balance,accountHolder));
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user");
+        }
     }
 
 
@@ -320,27 +331,59 @@ public class AdminService implements AdminServiceInterface {
     }
 
     @Override
-    public Admin createAdmin(AdminDTO adminDTO) {
+    public Admin createAdmin(AdminDTO adminDTO, Authentication authentication) {
+        String username = authentication.getName();
+        if (adminRepository.findByUsername(username) != null) {
+            Admin admin=adminRepository.save(
+                    new Admin(
+                            adminDTO.getName(),
+                            adminDTO.getUserName(),
+                            passwordEncoder.encode(adminDTO.getPassword())
+                    )
+            );
 
-        Admin admin=adminRepository.save(
-                new Admin(
-                        adminDTO.getName(),
-                        adminDTO.getUserName(),
-                        passwordEncoder.encode(adminDTO.getPassword())
-                        )
-                );
 
+            userService.addRoleToUser(admin.getUsername(), "ROLE_ADMIN");
 
-        userService.addRoleToUser(admin.getUsername(), "ROLE_ADMIN");
+            return admin;
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user");
+        }
 
-        return admin;
     }
 
     @Override
-    public DeleteMessageDTO deleteAccountHolder(Integer accountHolderId) {
-       User accountHolder=userRepository.findById(Long.valueOf(accountHolderId)).get();
-       userRepository.delete(accountHolder);
-       return new DeleteMessageDTO(accountHolder.getBankUserType().toString(),accountHolderId.toString());
+    public ThirdParty createThirdParty(ThirdPartyDTO thirdPartyDTO, Authentication authentication) {
+        String username = authentication.getName();
+        if (adminRepository.findByUsername(username) != null) {
+            ThirdParty thirdParty=thirdPartyRepository.save(
+                    new ThirdParty(
+                            thirdPartyDTO.getName(),
+                            thirdPartyDTO.getUserName(),
+                            null
+                    )
+            );
+
+            userService.addRoleToUser(thirdParty.getUsername(), "ROLE_THIRD_PARTY");
+
+            return thirdParty;
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user");
+        }
+    }
+
+    @Override
+    public DeleteMessageDTO deleteAccountHolder(Integer accountHolderId, Authentication authentication) {
+        String username = authentication.getName();
+        if (adminRepository.findByUsername(username) != null) {
+            AccountHolder accountHolder=accountHolderRepository.findById(accountHolderId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account holder not found"));
+
+            userRepository.delete(accountHolder);
+            return new DeleteMessageDTO(accountHolder.getBankUserType().toString(),accountHolderId.toString());
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user");
+        }
     }
 
 

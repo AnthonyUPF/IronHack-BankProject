@@ -7,6 +7,7 @@ import com.ironhack.demosecurityjwt.Enuns.ChangeBalance;
 import com.ironhack.demosecurityjwt.dtos.AccountDTO.*;
 import com.ironhack.demosecurityjwt.dtos.BankUserDTO.AccountHolderDTO;
 import com.ironhack.demosecurityjwt.dtos.BankUserDTO.AdminDTO;
+import com.ironhack.demosecurityjwt.dtos.BankUserDTO.ThirdPartyDTO;
 import com.ironhack.demosecurityjwt.dtos.MessageDTO.DeleteMessageDTO;
 import com.ironhack.demosecurityjwt.models.Account.Account;
 import com.ironhack.demosecurityjwt.models.Account.CreditCard;
@@ -14,11 +15,13 @@ import com.ironhack.demosecurityjwt.models.Account.Savings;
 import com.ironhack.demosecurityjwt.models.Account.StudentChecking;
 import com.ironhack.demosecurityjwt.models.BankUser.AccountHolder;
 import com.ironhack.demosecurityjwt.models.BankUser.Admin;
+import com.ironhack.demosecurityjwt.models.BankUser.ThirdParty;
 import com.ironhack.demosecurityjwt.models.Transaction.Transaction;
 import com.ironhack.demosecurityjwt.repositories.AccountRepository.SavingsRepository;
 import com.ironhack.demosecurityjwt.repositories.AddressRepository.AddressRepository;
 import com.ironhack.demosecurityjwt.repositories.BankUserRepository.AccountHolderRepository;
 import com.ironhack.demosecurityjwt.repositories.BankUserRepository.AdminRepository;
+import com.ironhack.demosecurityjwt.repositories.BankUserRepository.ThirdPartyRepository;
 import com.ironhack.demosecurityjwt.services.BankUserService.AdminService;
 import com.ironhack.demosecurityjwt.services.BankUserService.Interfaces.AdminServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +45,8 @@ public class AdminController implements AdminServiceInterface {
 
     @Autowired
     private SavingsRepository savingsRepository;
+    @Autowired
+    private ThirdPartyRepository thirdPartyRepository;
 
 
     @Override
@@ -103,8 +108,10 @@ public class AdminController implements AdminServiceInterface {
     }
 
     @Override
+    @PostMapping("/admins/newStudentChecking")
+    @ResponseStatus(HttpStatus.CREATED)
     public StudentChecking createStudentChecking(StudentCheckingDTO studentCheckingDTO, Authentication authentication) {
-        return null;
+        return adminService.createStudentChecking(studentCheckingDTO,authentication);
     }
 
 
@@ -118,14 +125,21 @@ public class AdminController implements AdminServiceInterface {
     @Override
     @PostMapping("/admins/newAdmin")
     @ResponseStatus(HttpStatus.CREATED)
-    public Admin createAdmin(@RequestBody AdminDTO adminDTO) {
-        return adminService.createAdmin(adminDTO);
+    public Admin createAdmin(@RequestBody AdminDTO adminDTO,Authentication authentication) {
+        return adminService.createAdmin(adminDTO, authentication);
+    }
+
+    @Override
+    @PostMapping("/admins/newThirdParty")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ThirdParty createThirdParty(ThirdPartyDTO thirdPartyDTO, Authentication authentication) {
+        return adminService.createThirdParty(thirdPartyDTO,authentication);
     }
 
     @Override
     @PostMapping("/admins/deleteAccountHolder")
-    public DeleteMessageDTO deleteAccountHolder(@RequestParam Integer accountHolderId) {
-        return adminService.deleteAccountHolder(accountHolderId);
+    public DeleteMessageDTO deleteAccountHolder(@RequestParam Integer accountHolderId, Authentication authentication) {
+        return adminService.deleteAccountHolder(accountHolderId,authentication);
     }
 
 

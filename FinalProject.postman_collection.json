@@ -1,0 +1,618 @@
+{
+	"info": {
+		"_postman_id": "16d38794-d399-4075-84dd-0d68ddce1d84",
+		"name": "FinalProject",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25572879"
+	},
+	"item": [
+		{
+			"name": "Admins",
+			"item": [
+				{
+					"name": "LogInAdmin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/login?username=james&password=1234",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "james"
+								},
+								{
+									"key": "password",
+									"value": "1234"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllSavings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/accounts/savings",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"accounts",
+								"savings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetALLCreditCards",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/accounts/creditCards",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"accounts",
+								"creditCards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateAdmin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"name\": \"Admin Test\",\r\n    \"userName\":\"Admin Test\",\r\n    \"password\":\"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/bankUsers/admins/newAdmin",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"bankUsers",
+								"admins",
+								"newAdmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateAccountHolder",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"name\": \"AccountHolder Test\",\r\n    \"userName\":\"HolderTest\",\r\n    \"password\":\"1234\",\r\n    \"dateOfBirth\": \"1950-10-05\",\r\n    \"street\": \"street T\",\r\n    \"city\": \"city T\",\r\n    \"state\": \"state T\",\r\n    \"zip\": \"00001\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/bankUsers/admins/newAccountHolder",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"bankUsers",
+								"admins",
+								"newAccountHolder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateSavings",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"balance\": \"300\",\r\n    \"accountHolderId\":\"5\",\r\n    \"interestRate\":\"0.4\",\r\n    \"minimumBalance\":\"200\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/bankUsers/admins/newSavings",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"bankUsers",
+								"admins",
+								"newSavings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChangeBalanceOfAccounts",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"accountId\": \"1\",\r\n    \"amount\":\"50\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/bankUsers/admins/changeBalanceOfAccounts?changeBalance=DECREASE_BALANCE",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"bankUsers",
+								"admins",
+								"changeBalanceOfAccounts"
+							],
+							"query": [
+								{
+									"key": "changeBalance",
+									"value": "INCREASE_BALANCE",
+									"disabled": true
+								},
+								{
+									"key": "changeBalance",
+									"value": "DECREASE_BALANCE"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AccountHolders",
+			"item": [
+				{
+					"name": "LogInAccountHolder",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/login?username=HolderTest&password=1234",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "HolderTest"
+								},
+								{
+									"key": "password",
+									"value": "1234"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateMailingAddress",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/bankUsers/accountHolders/updateMailingAddress",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"bankUsers",
+								"accountHolders",
+								"updateMailingAddress"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdatePrimaryAddress",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/bankUsers/accountHolders/updateMailingAddress",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"bankUsers",
+								"accountHolders",
+								"updateMailingAddress"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GetAllUsers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW1lcyIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS9sb2dpbiIsImV4cCI6MTY3NjYyNjY1Mn0.72ITjSP1jd9qZTkIACKcB97_nb5ZQSWygg2W6-bYlGY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllAdmins",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/bankUsers/admins",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bankUsers",
+						"admins"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllAccountHolders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/bankUsers/accountHolders",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bankUsers",
+						"accountHolders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllThirdParties",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/bankUsers/thirdParties",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bankUsers",
+						"thirdParties"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllAccounts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllCheckings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/accounts/checkings",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts",
+						"checkings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllStundentCheckings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/accounts/studentCheckings",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts",
+						"studentCheckings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllPrimaryOwnAccounts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJIb2xkZXJUZXN0Iiwicm9sZXMiOlsiUk9MRV9BQ0NPVU5UX0hPTERFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXBpL2xvZ2luIiwiZXhwIjoxNjc2NjczNTQyfQ.-3xDM0wjw6gJ0lYgJrApk9jHYkgZC4GGwWMLFidF1O0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/bankUsers/accountHolders/primaryOwnAccounts",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bankUsers",
+						"accountHolders",
+						"primaryOwnAccounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllSecondaryOwnAccounts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJIb2xkZXJUZXN0Iiwicm9sZXMiOlsiUk9MRV9BQ0NPVU5UX0hPTERFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXBpL2xvZ2luIiwiZXhwIjoxNjc2NjczNTQyfQ.-3xDM0wjw6gJ0lYgJrApk9jHYkgZC4GGwWMLFidF1O0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/bankUsers/accountHolders/secondaryOwnAccounts",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bankUsers",
+						"accountHolders",
+						"secondaryOwnAccounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateCreditCard",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"balance\": \"300\",\r\n    \"accountHolderId\":\"5\",\r\n    \"interestRate\":\"0.1\",\r\n    \"creditLimit\":\"300\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/bankUsers/admins/newCreditCard",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bankUsers",
+						"admins",
+						"newCreditCard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateChecking",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"balance\": \"300\",\r\n    \"accountHolderId\":\"5\",\r\n    \"minimumBalance\":\"300\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/bankUsers/admins/newCreditCard",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bankUsers",
+						"admins",
+						"newCreditCard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SendTransaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"sendingAccountId\": \"2\",\r\n    \"receivingAccountId\":\"1\",\r\n    \"amount\":\"100\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/bankUsers/admins/transaction",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bankUsers",
+						"admins",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteAccountHolder",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/bankUsers/admins/deleteAccountHolder?accountHolderId=2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bankUsers",
+						"admins",
+						"deleteAccountHolder"
+					],
+					"query": [
+						{
+							"key": "accountHolderId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

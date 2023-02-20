@@ -11,11 +11,10 @@ public class StudentCheckingDTO {
     private BigDecimal balance;
     private Integer accountHolderId;
 
-    private BigDecimal minimumBalance;
 
-    public StudentCheckingDTO(BigDecimal balance, Integer accountHolderId, BigDecimal minimumBalance) {
+
+    public StudentCheckingDTO(BigDecimal balance, Integer accountHolderId) {
         this.balance = balance;
         this.accountHolderId = accountHolderId;
-        this.minimumBalance = minimumBalance;
     }
 }

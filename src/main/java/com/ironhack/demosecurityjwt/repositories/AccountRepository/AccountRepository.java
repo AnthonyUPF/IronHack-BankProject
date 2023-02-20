@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface AccountRepository extends JpaRepository<Account,Integer> {
 
-
+  Account findBySecretKey(String secretKey);
 
 }

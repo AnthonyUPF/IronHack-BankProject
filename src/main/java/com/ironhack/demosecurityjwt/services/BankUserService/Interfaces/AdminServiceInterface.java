@@ -6,12 +6,12 @@ import com.ironhack.demosecurityjwt.Enuns.ChangeBalance;
 import com.ironhack.demosecurityjwt.dtos.AccountDTO.*;
 import com.ironhack.demosecurityjwt.dtos.BankUserDTO.AccountHolderDTO;
 import com.ironhack.demosecurityjwt.dtos.BankUserDTO.AdminDTO;
+import com.ironhack.demosecurityjwt.dtos.BankUserDTO.ThirdPartyDTO;
 import com.ironhack.demosecurityjwt.dtos.MessageDTO.DeleteMessageDTO;
 import com.ironhack.demosecurityjwt.models.Account.*;
 import com.ironhack.demosecurityjwt.models.BankUser.AccountHolder;
 import com.ironhack.demosecurityjwt.models.BankUser.Admin;
-import com.ironhack.demosecurityjwt.models.Transaction.Transaction;
-import com.ironhack.demosecurityjwt.models.User;
+import com.ironhack.demosecurityjwt.models.BankUser.ThirdParty;
 import org.springframework.security.core.Authentication;
 
 
@@ -42,9 +42,13 @@ public interface AdminServiceInterface {
 
     AccountHolder createAccountHolder(AccountHolderDTO accountHolderDTO,Authentication authentication);
 
-    Admin createAdmin(AdminDTO adminDTO);
+    Admin createAdmin(AdminDTO adminDTO, Authentication authentication);
 
-    DeleteMessageDTO deleteAccountHolder(Integer accountHolderId);
+    ThirdParty createThirdParty(ThirdPartyDTO thirdPartyDTO, Authentication authentication);
+
+    DeleteMessageDTO deleteAccountHolder(Integer accountHolderId, Authentication authentication);
+
+
 
 
 
