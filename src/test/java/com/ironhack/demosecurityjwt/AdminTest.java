@@ -64,7 +64,7 @@ public class AdminTest {
 
     private MvcResult mvcResult;
 
-    private ObjectMapper objectMapper= new ObjectMapper().registerModule(new JavaTimeModule());;
+    private ObjectMapper objectMapper= new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Autowired
     AddressRepository addressRepository;
