@@ -1,5 +1,5 @@
 package com.ironhack.demosecurityjwt.Enuns;
 
 public enum AccountType {
-    studentChecking, checking, savings,creditCard;
+    STUDENT_CHECKING, CHECKING, SAVINGS, CREDIT_CARD;
 }

@@ -13,5 +13,9 @@ public class CheckingService implements CheckingServiceInterface {
     @Autowired
     CheckingRepository checkingRepository;
 
-    
+
+    @Override
+    public List<Checking> getAllCheckings() {
+        return null;
+    }
 }

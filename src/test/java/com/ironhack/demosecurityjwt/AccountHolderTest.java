@@ -1,12 +1,9 @@
 package com.ironhack.demosecurityjwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ironhack.demosecurityjwt.Enuns.ChangeBalance;
-import com.ironhack.demosecurityjwt.dtos.AccountDTO.AddressDTO;
 import com.ironhack.demosecurityjwt.dtos.AccountDTO.ChangeBalanceDTO;
 import com.ironhack.demosecurityjwt.dtos.AccountDTO.CreditCardDTO;
 import com.ironhack.demosecurityjwt.dtos.AccountDTO.SavingsDTO;
-import com.ironhack.demosecurityjwt.dtos.BankUserDTO.AccountHolderDTO;
 import com.ironhack.demosecurityjwt.models.Account.Account;
 import com.ironhack.demosecurityjwt.models.Account.CreditCard;
 import com.ironhack.demosecurityjwt.models.Account.Savings;
@@ -32,30 +29,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-
-import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class AdminTest {
+public class AccountHolderTest {
     @Autowired
     WebApplicationContext webApplicationContext;
 
@@ -161,179 +151,21 @@ public class AdminTest {
     }
 
 
-    @Test
-    public void getAllSavings_successTest() throws Exception {
-        mvcResult = mockMvc.perform(get("/api/bankUsers/admins/savings")
-                        .with(user("adminTest").password("1234")))
-                .andExpect(status().isOk()).andReturn();
-        List<Savings> savingsList = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), List.class);
-        assertEquals(savingsRepository.findAll().size(), savingsList.size());
-    }
 
     @Test
-    public void getAllSavings_failureTest() throws Exception {
-        mvcResult = mockMvc.perform(get("/api/bankUsers/admins/savings")
+    public void getAllPrimaryOwnAccounts_successTest() throws Exception {
+        mvcResult = mockMvc.perform(get("/api/bankUsers/accountHolders/primaryOwnAccounts")
                         .with(user("accountHolderTest").password("1234")))
-                .andExpect(status().isBadRequest()).andReturn();
-    }
-
-    @Test
-    public void getAllCreditCards_successTest() throws Exception {
-        mvcResult = mockMvc.perform(get("/api/bankUsers/admins/creditCards")
-                        .with(user("adminTest").password("1234")))
                 .andExpect(status().isOk()).andReturn();
-        List<CreditCard>creditCardList = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), List.class);
-        assertEquals(creditCardRepository.findAll().size(), creditCardList.size());
     }
 
+
     @Test
-    public void getAllCreditCards_failureTest() throws Exception {
-        mvcResult = mockMvc.perform(get("/api/bankUsers/admins/creditCards")
+    public void getAllSecondaryOwnAccounts_successTest() throws Exception {
+        mvcResult = mockMvc.perform(get("/api/bankUsers/accountHolders/secondaryOwnAccounts")
                         .with(user("accountHolderTest").password("1234")))
-                .andExpect(status().isBadRequest()).andReturn();
-    }
-
-
-
-    @Test
-    public void getAllAdmins_successTest() throws Exception {
-        mvcResult = mockMvc.perform(get("/api/bankUsers/admins/getAdmins")
-                        .with(user("adminTest").password("1234")))
                 .andExpect(status().isOk()).andReturn();
-        List<Admin>adminList = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), List.class);
-        assertEquals(adminRepository.findAll().size(), adminList.size());
     }
-
-    @Test
-    public void getAllAdmins_failureTest() throws Exception {
-        mvcResult = mockMvc.perform(get("/api/bankUsers/admins/getAdmins")
-                        .with(user("accountHolderTest").password("1234")))
-                .andExpect(status().isBadRequest()).andReturn();
-    }
-
-    @Test
-    public void changeBalanceOfAnyAccount_successTest() throws Exception {
-
-         Account testAccount= accountRepository.save(
-                 new Account(
-                         new Money(new BigDecimal("100"))
-                 )
-         );
-
-        ChangeBalanceDTO changeBalanceDTO = new ChangeBalanceDTO(testAccount.getAccountId(), 100);
-        String requestBody = objectMapper.writeValueAsString(changeBalanceDTO);
-
-        mvcResult = mockMvc.perform(post("/api/bankUsers/admins/changeBalanceOfAccounts")
-                        .with(user("adminTest").password("1234"))
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("changeBalance", "INCREASE_BALANCE"))
-                .andExpect(status().isAccepted())
-                .andReturn();
-
-        JSONObject json = new JSONObject(mvcResult.getResponse().getContentAsString());
-        assertEquals( json.getJSONObject("balance").get("amount"), accountRepository.findById(testAccount.getAccountId()).get().getBalance().getAmount().doubleValue() );
-
-
-    }
-
-
-    @Test
-    public void changeBalanceOfAnyAccount_failureTest() throws Exception {
-
-        Account testAccount= accountRepository.save(
-                new Account(
-                        new Money(new BigDecimal("100"))
-                )
-        );
-
-        ChangeBalanceDTO changeBalanceDTO = new ChangeBalanceDTO(testAccount.getAccountId(), 100);
-        String requestBody = objectMapper.writeValueAsString(changeBalanceDTO);
-
-        mvcResult = mockMvc.perform(post("/api/bankUsers/admins/changeBalanceOfAccounts")
-                        .with(user("accountHolderTest").password("1234"))
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("changeBalance", "INCREASE_BALANCE"))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-    }
-
-
-    @Test
-    public void createSavings_successTest() throws Exception {
-        SavingsDTO savingsDTO = new SavingsDTO(new BigDecimal("1000"), 1, new BigDecimal("100"), new BigDecimal("0.01"));
-        String requestBody = objectMapper.writeValueAsString(savingsDTO);
-
-        mvcResult=mockMvc.perform(post("/api/bankUsers/admins/newSavings")
-                        .with(user("adminTest").password("1234"))
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andReturn();
-
-
-        JSONObject json = new JSONObject(mvcResult.getResponse().getContentAsString());
-        assertTrue(savingsRepository.findById(Integer.valueOf(json.getString("accountId"))).isPresent()  );
-    }
-
-    @Test
-    public void createSavings_failureTest() throws Exception {
-        SavingsDTO savingsDTO = new SavingsDTO(new BigDecimal("1000"), 1, new BigDecimal("100"), new BigDecimal("0.01"));
-        String requestBody = objectMapper.writeValueAsString(savingsDTO);
-
-        mvcResult=mockMvc.perform(post("/api/bankUsers/admins/newSavings")
-                        .with(user("accountHolderTest").password("1234"))
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-    }
-
-
-
-    @Test
-    public void createCreditCard_successTest() throws Exception {
-        CreditCardDTO creditCardDTO = new CreditCardDTO(new BigDecimal("100"), 1, new BigDecimal("1000"), new BigDecimal("0.2"));
-
-        String requestBody = objectMapper.writeValueAsString(creditCardDTO);
-
-        mvcResult = mockMvc.perform(post("/api/bankUsers/admins/newCreditCard")
-                        .with(user("adminTest").password("1234"))
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andReturn();
-
-        JSONObject json = new JSONObject(mvcResult.getResponse().getContentAsString());
-        assertTrue(creditCardRepository.findById(Integer.valueOf(json.getString("accountId"))).isPresent()  );
-
-
-    }
-
-
-
-
-    @Test
-    public void createCreditCard_failureTest() throws Exception {
-        CreditCardDTO creditCardDTO = new CreditCardDTO(new BigDecimal("100"), 1, new BigDecimal("1000"), new BigDecimal("0.2"));
-
-        String requestBody = objectMapper.writeValueAsString(creditCardDTO);
-
-        mvcResult = mockMvc.perform(post("/api/bankUsers/admins/newCreditCard")
-                        .with(user("accountHolderTest").password("1234"))
-                        .content(requestBody)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-    }
-
-
-   
-
 
 
 
