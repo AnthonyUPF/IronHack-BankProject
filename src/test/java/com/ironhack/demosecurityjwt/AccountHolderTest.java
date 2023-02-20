@@ -1,6 +1,7 @@
 package com.ironhack.demosecurityjwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ironhack.demosecurityjwt.dtos.AccountDTO.ChangeBalanceDTO;
 import com.ironhack.demosecurityjwt.dtos.AccountDTO.CreditCardDTO;
 import com.ironhack.demosecurityjwt.dtos.AccountDTO.SavingsDTO;
@@ -53,7 +54,7 @@ public class AccountHolderTest {
 
     private MvcResult mvcResult;
 
-    private ObjectMapper objectMapper=new ObjectMapper();
+    private ObjectMapper objectMapper= new ObjectMapper().registerModule(new JavaTimeModule());;
 
     @Autowired
     AddressRepository addressRepository;

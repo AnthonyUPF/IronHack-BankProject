@@ -82,10 +82,12 @@ public class SecurityConfig {
                 .requestMatchers(POST, "/api/users").hasAnyAuthority("ROLE_ADMIN")
 
 
+                .requestMatchers("/api/bankUsers/admins/**").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers("/api/bankUsers/accountHolders/**").hasAnyAuthority("ROLE_ACCOUNT_HOLDER")
+                .requestMatchers("/api/bankUsers/thirdParties/**").hasAnyAuthority("ROLE_THIRD_PARTY")
 
-
-                .requestMatchers("/api/accounts/**").permitAll()
-                .requestMatchers("/api/bankUsers/**").permitAll()
+                .requestMatchers("/api/accounts/**").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers("/api/bankUsers/**").hasAnyAuthority("ROLE_ADMIN")
 
 
 

@@ -74,8 +74,6 @@ public class ThirdPartyService implements ThirdPartyServiceInterface {
                 } else {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient funds");
                 }
-
-
             }else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid secretKey");
             }
