@@ -66,7 +66,8 @@ public class AccountHolderService implements AccountHolderServiceInterface {
     public AccountHolder updateMailingAddress(AddressDTO addressDTO,Authentication authentication) {
         String username = authentication.getName();
         if (accountHolderRepository.findByUsername(username) != null) {
-            AccountHolder accountHolder=accountHolderRepository.findById(addressDTO.getAccountHolderId()).get();
+            AccountHolder accountHolder=accountHolderRepository.findById(addressDTO.getAccountHolderId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account holder not found"));
 
             accountHolder.getMailingAddress().setStreet(addressDTO.getStreet());
             accountHolder.getMailingAddress().setState(addressDTO.getState());
@@ -84,7 +85,8 @@ public class AccountHolderService implements AccountHolderServiceInterface {
     public AccountHolder updatePrimaryAddress(AddressDTO addressDTO, Authentication authentication) {
         String username = authentication.getName();
         if (accountHolderRepository.findByUsername(username) != null) {
-            AccountHolder accountHolder=accountHolderRepository.findById(addressDTO.getAccountHolderId()).get();
+            AccountHolder accountHolder=accountHolderRepository.findById(addressDTO.getAccountHolderId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account holder not found"));
 
             accountHolder.getPrimaryAddress().setStreet(addressDTO.getStreet());
             accountHolder.getPrimaryAddress().setState(addressDTO.getState());
@@ -100,7 +102,6 @@ public class AccountHolderService implements AccountHolderServiceInterface {
     @Override
     public Transaction sendTransaction(TransactionDTO transactionDTO, Authentication authentication) {
         String username = authentication.getName();
-
         if (accountHolderRepository.findByUsername(username) != null) {
             Account sendingAccount = accountRepository.findById(transactionDTO.getSendingAccountId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sending account not found"));

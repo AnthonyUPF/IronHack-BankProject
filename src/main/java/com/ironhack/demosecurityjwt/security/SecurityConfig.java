@@ -81,12 +81,27 @@ public class SecurityConfig {
                 .requestMatchers(GET, "/api/users").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
                 .requestMatchers(POST, "/api/users").hasAnyAuthority("ROLE_ADMIN")
 
+/*
+                .requestMatchers(GET,"/api/bankUsers/admins/**").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(PATCH,"/api/bankUsers/admins/**").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(POST,"/api/bankUsers/admins/**").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(PUT,"/api/bankUsers/admins/**").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(DELETE,"/api/bankUsers/admins/**").hasAnyAuthority("ROLE_ADMIN")
 
-                .requestMatchers("/api/bankUsers/admins/**").hasAnyAuthority("ROLE_ADMIN")
-                .requestMatchers("/api/bankUsers/accountHolders/**").hasAnyAuthority("ROLE_ACCOUNT_HOLDER")
-                .requestMatchers("/api/bankUsers/thirdParties/**").hasAnyAuthority("ROLE_THIRD_PARTY")
+                .requestMatchers(GET,"/api/bankUsers/accountHolders/**").hasAnyAuthority("ROLE_ACCOUNT_HOLDER")
+                .requestMatchers( PATCH,"/api/bankUsers/accountHolders/**").hasAnyAuthority("ROLE_ACCOUNT_HOLDER")
+                .requestMatchers(POST,"/api/bankUsers/accountHolders/**").hasAnyAuthority("ROLE_ACCOUNT_HOLDER")
+                .requestMatchers(PUT,"/api/bankUsers/accountHolders/**").hasAnyAuthority("ROLE_ACCOUNT_HOLDER")
+                .requestMatchers(DELETE,"/api/bankUsers/accountHolders/**").hasAnyAuthority("ROLE_ACCOUNT_HOLDER")
 
-                .requestMatchers("/api/accounts/**").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(GET,"/api/bankUsers/thirdParties/**").hasAnyAuthority("ROLE_THIRD_PARTY")
+                .requestMatchers(PATCH,"/api/bankUsers/thirdParties/**").hasAnyAuthority("ROLE_THIRD_PARTY")
+                .requestMatchers(POST,"/api/bankUsers/thirdParties/**").hasAnyAuthority("ROLE_THIRD_PARTY")
+                .requestMatchers(PUT,"/api/bankUsers/thirdParties/**").hasAnyAuthority("ROLE_THIRD_PARTY")
+                .requestMatchers(DELETE,"/api/bankUsers/thirdParties/**").hasAnyAuthority("ROLE_THIRD_PARTY")
+*/
+                .requestMatchers("/api/accounts/**").permitAll()
+                .requestMatchers("/api/bankUsers/**").permitAll()
 
 
 

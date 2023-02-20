@@ -40,7 +40,11 @@ public interface AdminServiceInterface {
 
     StudentChecking createStudentChecking(StudentCheckingDTO studentCheckingDTO, Authentication authentication);
 
+
+    Account updateSecondaryOwnerOfAccounts(Integer accountId,  AccountHolderDTO accountHolderDTO, Authentication authentication);
+
     AccountHolder createAccountHolder(AccountHolderDTO accountHolderDTO,Authentication authentication);
+
 
     Admin createAdmin(AdminDTO adminDTO, Authentication authentication);
 

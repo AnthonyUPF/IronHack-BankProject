@@ -14,6 +14,7 @@ import com.ironhack.demosecurityjwt.models.BankUser.AccountHolder;
 import com.ironhack.demosecurityjwt.models.BankUser.Admin;
 import com.ironhack.demosecurityjwt.models.BankUser.ThirdParty;
 import com.ironhack.demosecurityjwt.models.Money.Money;
+import com.ironhack.demosecurityjwt.models.Transaction.Transaction;
 import com.ironhack.demosecurityjwt.models.User;
 import com.ironhack.demosecurityjwt.repositories.AccountRepository.*;
 import com.ironhack.demosecurityjwt.repositories.AddressRepository.AddressRepository;
@@ -280,6 +281,55 @@ public class AdminService implements AdminServiceInterface {
             Money balance = new Money(studentCheckingDTO.getBalance());
 
             return studentCheckingRepository.save(new StudentChecking(balance,accountHolder));
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user");
+        }
+    }
+
+    @Override
+    public Account updateSecondaryOwnerOfAccounts(Integer accountId, AccountHolderDTO accountHolderDTO, Authentication authentication) {
+        String username = authentication.getName();
+        if (accountHolderRepository.findByUsername(username) != null) {
+            Account account = accountRepository.findById(accountId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sending account not found"));
+
+            Address primaryAddress=addressRepository.save(
+                    new Address(
+                            accountHolderDTO.getStreet(),
+                            accountHolderDTO.getCity(),
+                            accountHolderDTO.getState(),
+                            accountHolderDTO.getZipCode()
+                    )
+            );
+
+            Address mailingAddress=addressRepository.save(
+                    new Address(
+                            accountHolderDTO.getStreet(),
+                            accountHolderDTO.getCity(),
+                            accountHolderDTO.getState(),
+                            accountHolderDTO.getZipCode()
+                    )
+            );
+
+
+            AccountHolder accountHolder=  new AccountHolder(
+                    accountHolderDTO.getName(),
+                    accountHolderDTO.getUserName(),
+                    passwordEncoder.encode(accountHolderDTO.getPassword()),
+                    accountHolderDTO.getDateOfBirth(),
+                    primaryAddress
+            );
+
+            accountHolder.setMailingAddress(mailingAddress);
+
+            accountHolderRepository.save(accountHolder);
+
+            userService.addRoleToUser(accountHolder.getUsername(), "ROLE_ACCOUNT_HOLDER");
+
+            account.setSecondaryOwner(accountHolder);
+
+            return accountRepository.save(account);
+
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user");
         }

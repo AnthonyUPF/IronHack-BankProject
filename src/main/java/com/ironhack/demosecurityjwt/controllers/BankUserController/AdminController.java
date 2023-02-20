@@ -114,6 +114,13 @@ public class AdminController implements AdminServiceInterface {
         return adminService.createStudentChecking(studentCheckingDTO,authentication);
     }
 
+    @Override
+    @PutMapping("/accountHolders/updateSecondaryOwner")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Account updateSecondaryOwnerOfAccounts(Integer accountId, AccountHolderDTO accountHolderDTO, Authentication authentication) {
+        return adminService.updateSecondaryOwnerOfAccounts(accountId,accountHolderDTO,authentication);
+    }
+
 
     @Override
     @PostMapping("/admins/newAccountHolder")
