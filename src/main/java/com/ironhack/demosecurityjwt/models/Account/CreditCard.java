@@ -26,29 +26,73 @@ import java.time.temporal.ChronoUnit;
 public class CreditCard extends Account {
 
 
+    /**
+
+     The maximum credit limit for a CreditCard account
+     */
     private static final Money MAX_CREDIT_LIMIT = new Money(new BigDecimal("100000"));
 
+    /**
+
+     The default credit limit for a CreditCard account
+     */
     private static final Money DEFAULT_CREDIT_LIMIT = new Money(new BigDecimal("100"));
 
+    /**
+
+     The default interest rate for a CreditCard account
+     */
     private static final BigDecimal DEFAULT_INTEREST_RATE = new BigDecimal("0.2");
+
+    /**
+
+     The minimum interest rate for a CreditCard account
+     */
     private static final BigDecimal MIN_INTEREST_RATE = new BigDecimal("0.1");
 
-    private AccountType accountType=AccountType.CREDIT_CARD;
+    /**
 
+     The account type for a CreditCard account
+     */
+    private AccountType accountType = AccountType.CREDIT_CARD;
 
+    /**
 
+     The current credit limit for this account
+     */
     @Embedded
-    private Money creditLimit=DEFAULT_CREDIT_LIMIT;
+    private Money creditLimit = DEFAULT_CREDIT_LIMIT;
 
+    /**
 
-    private BigDecimal  interestRate=DEFAULT_INTEREST_RATE;
+     The current interest rate for this account
+     */
+    private BigDecimal interestRate = DEFAULT_INTEREST_RATE;
 
+    /**
+
+     The date that interest was last added to this account
+     */
     private LocalDateTime lastInterestAddedDate = LocalDateTime.now();
 
+    /**
+
+     Constructs a new CreditCard account with the given balance and primary owner
+     @param balance the starting balance for this account
+     @param primaryOwner the primary owner of this account
+     */
     public CreditCard(Money balance, AccountHolder primaryOwner) {
         super(balance, primaryOwner);
     }
 
+    /**
+
+     Constructs a new CreditCard account with the given balance, primary owner, credit limit, and interest rate
+     @param balance the starting balance for this account
+     @param primaryOwner the primary owner of this account
+     @param creditLimit the credit limit for this account
+     @param interestRate the interest rate for this account
+     */
     public CreditCard(Money balance, AccountHolder primaryOwner, Money creditLimit, BigDecimal interestRate) {
         super.setBalance(balance);
         super.setPrimaryOwner(primaryOwner);
@@ -56,6 +100,12 @@ public class CreditCard extends Account {
         this.setInterestRate(interestRate);
     }
 
+    /**
+
+     Sets the credit limit for this account
+     @param creditLimit the new credit limit for this account
+     @throws ResponseStatusException if the new credit limit is not between the default and maximum limits
+     */
     public void setCreditLimit(Money creditLimit) {
         if (creditLimit.getAmount().compareTo(DEFAULT_CREDIT_LIMIT.getAmount()) < 0 || creditLimit.getAmount().compareTo(MAX_CREDIT_LIMIT.getAmount()) > 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credit limit should be between 100 and 100000");
@@ -63,6 +113,12 @@ public class CreditCard extends Account {
         this.creditLimit = creditLimit;
     }
 
+    /**
+
+     Sets the interest rate for this account
+     @param interestRate the new interest rate for this account
+     @throws ResponseStatusException if the new interest rate is not between the minimum and default rates
+     */
     public void setInterestRate(BigDecimal interestRate) {
         if (interestRate.compareTo(MIN_INTEREST_RATE) < 0 || interestRate.compareTo(DEFAULT_INTEREST_RATE) > 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Interest rate must be between 0.1 and 0.2");
@@ -70,7 +126,10 @@ public class CreditCard extends Account {
         this.interestRate = interestRate;
     }
 
+    /**
 
+     A method that adds interest to the CreditCard class.
+     */
 
     public void addInterest() {
         LocalDateTime currentDate = LocalDateTime.now();
